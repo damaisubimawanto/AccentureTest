@@ -1,0 +1,60 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+apply from: "${rootProject.rootDir}/dependencies.gradle"
+
+android {
+    namespace 'com.damai.accenturetest'
+    compileSdk compile_sdk_version
+
+    defaultConfig {
+        applicationId "com.damai.accenturetest"
+        minSdk min_sdk_version
+        targetSdk compile_sdk_version
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+
+    implementation project(':base')
+
+    kapt dagger.compiler
+
+    testImplementation test_library.androidx_core_test
+    testImplementation test_library.androidx_test_espresso
+    testImplementation test_library.androidx_test_extension
+    testImplementation test_library.androidx_test_extension_ktx
+    testImplementation test_library.androidx_test_runner
+    testImplementation test_library.assertj_core
+    testImplementation test_library.junit_core
+    testImplementation test_library.junit_jupiter
+    testImplementation test_library.kotlinx_coroutines_test
+    testImplementation test_library.livedata_test
+    testImplementation test_library.mock
+    testImplementation test_library.mock_webserver
+}
