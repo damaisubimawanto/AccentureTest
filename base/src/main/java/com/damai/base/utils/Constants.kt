@@ -14,4 +14,8 @@ object Constants {
     const val HEADER_AUTHORIZATION_NAME = "Authorization"
     const val HEADER_AUTHORIZATION_VALUE = "Bearer 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"
     const val HEADER_LINK_NAME = "Link"
+
+    const val QUERY_PARAM_SINCE = "since"
+
+    val NEXT_PATTERN = "(?<=<)(\\S*)(?=>; rel=\"next\")".toRegex()
 }

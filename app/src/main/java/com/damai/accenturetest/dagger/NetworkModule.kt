@@ -8,6 +8,7 @@ import com.damai.base.utils.Constants.HEADER_API_VERSION_VALUE
 import com.damai.base.utils.Constants.HEADER_AUTHORIZATION_NAME
 import com.damai.base.utils.Constants.HEADER_AUTHORIZATION_VALUE
 import com.damai.data.apiservices.MainService
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -45,6 +46,7 @@ class NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

@@ -15,7 +15,8 @@ import javax.inject.Singleton
         NetworkModule::class,
         DispatcherProviderModule::class,
         MainRepositoryModule::class,
-        MapperModules::class
+        MapperModules::class,
+        PagingSourceModules::class
     ]
 )
 interface ApplicationComponent {

@@ -1,7 +1,8 @@
 package com.damai.data.apiservices
 
 import com.damai.data.responses.UserDetailsResponse
-import retrofit2.Call
+import kotlinx.coroutines.Deferred
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -12,12 +13,12 @@ import retrofit2.http.Query
 interface MainService {
 
     @GET("/users")
-    suspend fun getUserList(
+    fun getUserListAsync(
         @Query("since") since: Int?
-    ): Call<List<UserDetailsResponse>>
+    ): Deferred<Response<List<UserDetailsResponse>>>
 
     @GET("users/{username}")
-    suspend fun getUserDetails(
+    fun getUserDetailsAsync(
         @Path("username") username: String
-    ): Call<UserDetailsResponse>
+    ): Deferred<Response<UserDetailsResponse>>
 }

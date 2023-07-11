@@ -40,12 +40,14 @@ dependencies {
     api android_library.androidx_lifecycle_runtime
     api android_library.androidx_lifecycle_viewmodel
     api android_library.androidx_navigation_fragment
+    api android_library.androidx_paging_runtime
     api android_library.android_material
 
     api dagger.core
 
     api squareup.okhttp3
     api squareup.retrofit2
+    api squareup.retrofit_coroutines_adapter
     api squareup.retrofit_gson_converter
 
     androidTestApi test_library.androidx_test_espresso

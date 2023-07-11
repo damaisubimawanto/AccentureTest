@@ -34,7 +34,7 @@ class MainRepositoryImpl @Inject constructor(
             dispatcherProvider = dispatcherProvider
         ) {
             override suspend fun remoteFetch(): UserDetailsModel {
-                val response = mainService.getUserDetails(username = userName).execute()
+                val response = mainService.getUserDetailsAsync(username = userName).await()
                 val headers = response.headers()
                 return userDetailsMapper.map(response.body()).also {
                     it.statusCode = response.code()
