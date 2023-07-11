@@ -15,7 +15,10 @@ import androidx.viewbinding.ViewBinding
 abstract class BaseFragment<VB: ViewBinding, VM: ViewModel> : Fragment() {
 
     //region Abstract implementation
-    abstract fun getViewBinding(): VB
+    abstract fun getViewBinding(
+        inflater: LayoutInflater,
+        viewGroup: ViewGroup?
+    ): VB
 
     abstract val viewModel: VM
     //endregion `Abstract implementation`
@@ -34,7 +37,10 @@ abstract class BaseFragment<VB: ViewBinding, VM: ViewModel> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = getViewBinding()
+        _binding = getViewBinding(
+            inflater = inflater,
+            viewGroup = container
+        )
         return binding.root
     }
 

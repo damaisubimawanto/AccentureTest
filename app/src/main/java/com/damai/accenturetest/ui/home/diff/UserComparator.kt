@@ -1,4 +1,4 @@
-package com.damai.accenturetest.ui.diff
+package com.damai.accenturetest.ui.home.diff
 
 import androidx.recyclerview.widget.DiffUtil
 import com.damai.domain.models.UserDetailsModel

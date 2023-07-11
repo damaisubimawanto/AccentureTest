@@ -1,7 +1,9 @@
 package com.damai.accenturetest.dagger
 
 import android.content.Context
-import com.damai.accenturetest.MainActivity
+import com.damai.accenturetest.ui.MainActivity
+import com.damai.accenturetest.ui.home.HomeUserListFragment
+import com.damai.accenturetest.ui.home.UserListFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -27,4 +29,8 @@ interface ApplicationComponent {
     }
 
     fun inject(mainActivity: MainActivity)
+
+    fun inject(fragment: HomeUserListFragment)
+
+    fun inject(fragment: UserListFragment)
 }

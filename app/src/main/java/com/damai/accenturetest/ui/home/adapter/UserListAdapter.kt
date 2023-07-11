@@ -1,10 +1,10 @@
-package com.damai.accenturetest.ui.adapter
+package com.damai.accenturetest.ui.home.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.damai.accenturetest.databinding.ItemRvUserBinding
-import com.damai.accenturetest.ui.diff.UserComparator
+import com.damai.accenturetest.ui.home.diff.UserComparator
 import com.damai.base.extensions.viewBinding
 import com.damai.domain.models.UserDetailsModel
 

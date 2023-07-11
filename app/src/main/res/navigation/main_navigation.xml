@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/home_user_list">
+
+    <fragment
+        android:id="@+id/home_user_list"
+        android:name="com.damai.accenturetest.ui.home.HomeUserListFragment"
+        android:label="Home User List"
+        tools:layout="@layout/fragment_home_user_list" />
+
+</navigation>

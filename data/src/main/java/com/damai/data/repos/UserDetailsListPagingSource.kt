@@ -23,27 +23,30 @@ class UserDetailsListPagingSource @Inject constructor(
 ) : PagingSource<Int, UserDetailsModel>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UserDetailsModel> {
-        val loadResult = try {
+        return try {
             val response = mainService.getUserListAsync(params.key).await()
+
+            /* Convert the body response to body model. */
+            val body = response.body()?.map {
+                userDetailsMapper.map(it)
+            } ?: listOf()
+
+            /* Get the next key from response headers. */
             val headers = response.headers()
             val link = headers[HEADER_LINK_NAME]
 
-            val nextKey: Int? = if (link.isNullOrBlank().not() && link!!.contains("rel=\"next\"")) {
+            val nextKey: Int? = if (link?.contains("rel=\"next\"") == true) {
                 val matchResult = NEXT_PATTERN.find(link)
                 val resultValue = matchResult?.value
                 Log.d(TAG, "UserDetailsListPagingSource -> load() -> resultValue = $resultValue")
-                if (resultValue == null) null
-                else {
-                    val nextLinkUri = Uri.parse(resultValue)
+                resultValue?.let { _resultValue ->
+                    val nextLinkUri = Uri.parse(_resultValue)
                     nextLinkUri.getQueryParameter(QUERY_PARAM_SINCE)?.toIntOrNull()
                 }
             } else null
             Log.d(TAG, "UserDetailsListPagingSource -> load() -> link header = $link, next key = $nextKey")
 
-            val body = response.body()?.map {
-                userDetailsMapper.map(it)
-            } ?: listOf()
-
+            /* Return the load success. */
             LoadResult.Page(
                 data = body,
                 prevKey = params.key,
@@ -58,7 +61,6 @@ class UserDetailsListPagingSource @Inject constructor(
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
-        return loadResult
     }
 
     override fun getRefreshKey(state: PagingState<Int, UserDetailsModel>): Int? {

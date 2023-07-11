@@ -1,4 +1,4 @@
-package com.damai.accenturetest
+package com.damai.accenturetest.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,10 +14,12 @@ import com.damai.domain.usecases.UserDetailsUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by damai007 on 10/July/2023
  */
+@Singleton
 class MainViewModel @Inject constructor(
     private val userDetailsUseCase: UserDetailsUseCase,
     private val dispatcherProvider: DispatcherProvider,
