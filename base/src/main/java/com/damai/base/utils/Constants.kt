@@ -13,4 +13,5 @@ object Constants {
     const val HEADER_API_VERSION_VALUE = "2022-11-28"
     const val HEADER_AUTHORIZATION_NAME = "Authorization"
     const val HEADER_AUTHORIZATION_VALUE = "Bearer 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"
+    const val HEADER_LINK_NAME = "Link"
 }

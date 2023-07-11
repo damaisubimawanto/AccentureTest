@@ -17,12 +17,12 @@ sealed class ResultWrapper<out T> {
 internal suspend fun <T: BaseModel> safeApiCall(
     dispatcher: CoroutineDispatcher,
     apiCall: suspend () -> T?
-): ResultWrapper<T?> {
+): ResultWrapper<T> {
     return withContext(dispatcher) {
         try {
             val call = apiCall.invoke()
-            when (call?.status) {
-                "success" -> ResultWrapper.Success(call)
+            when (call?.statusCode) {
+                200 -> ResultWrapper.Success(call)
                 else -> {
                     ResultWrapper.GenericError(
                         message = call?.message
