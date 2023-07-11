@@ -5,7 +5,7 @@ plugins {
 apply from: "${rootProject.rootDir}/dependencies.gradle"
 
 android {
-    namespace 'com.damai.base'
+    namespace 'com.damai.data'
     compileSdk compile_sdk_version
 
     defaultConfig {
@@ -26,30 +26,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    buildFeatures {
-        viewBinding true
-    }
 }
 
 dependencies {
 
-    api android_library.androidx_appcompat
-    api android_library.androidx_constraint_layout
-    api android_library.androidx_core_ktx
-    api android_library.androidx_lifecycle_livedata
-    api android_library.androidx_lifecycle_runtime
-    api android_library.androidx_lifecycle_viewmodel
-    api android_library.androidx_navigation_fragment
-    api android_library.android_material
-
-    api dagger.core
-
-    api squareup.okhttp3
-    api squareup.retrofit2
-    api squareup.retrofit_gson_converter
-
-    androidTestApi test_library.androidx_test_espresso
-    androidTestApi test_library.androidx_test_extension
+    implementation project(':base')
+    implementation project(':domain')
 
     testImplementation test_library.androidx_core_test
     testImplementation test_library.androidx_test_espresso
