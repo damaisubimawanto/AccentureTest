@@ -2,7 +2,7 @@ package com.damai.accenturetest.dagger
 
 import android.content.Context
 import com.damai.accenturetest.ui.MainActivity
-import com.damai.accenturetest.ui.detail.adapter.UserDetailsFragment
+import com.damai.accenturetest.ui.detail.UserDetailsFragment
 import com.damai.accenturetest.ui.home.HomeUserListFragment
 import com.damai.accenturetest.ui.home.UserFavoriteListFragment
 import com.damai.accenturetest.ui.home.UserListFragment

@@ -46,6 +46,8 @@ dependencies {
 
     api dagger.core
 
+    api glide.core
+
     api squareup.okhttp3
     api squareup.retrofit2
     api squareup.retrofit_coroutines_adapter
