@@ -3,6 +3,7 @@ package com.damai.accenturetest.dagger
 import android.content.Context
 import com.damai.accenturetest.ui.MainActivity
 import com.damai.accenturetest.ui.home.HomeUserListFragment
+import com.damai.accenturetest.ui.home.UserFavoriteListFragment
 import com.damai.accenturetest.ui.home.UserListFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -33,4 +34,6 @@ interface ApplicationComponent {
     fun inject(fragment: HomeUserListFragment)
 
     fun inject(fragment: UserListFragment)
+
+    fun inject(fragment: UserFavoriteListFragment)
 }
