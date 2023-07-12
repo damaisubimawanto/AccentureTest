@@ -17,5 +17,7 @@ object Constants {
 
     const val QUERY_PARAM_SINCE = "since"
 
+    const val BUNDLE_ARGS_USERNAME = "username"
+
     val NEXT_PATTERN = "(?<=<)(\\S*)(?=>; rel=\"next\")".toRegex()
 }

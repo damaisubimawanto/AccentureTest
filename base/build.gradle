@@ -40,6 +40,7 @@ dependencies {
     api android_library.androidx_lifecycle_runtime
     api android_library.androidx_lifecycle_viewmodel
     api android_library.androidx_navigation_fragment
+    api android_library.androidx_navigation_ui
     api android_library.androidx_paging_runtime
     api android_library.android_material
 

@@ -37,7 +37,11 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, MainViewModel>() 
 
     override fun FragmentUserListBinding.viewInitialization() {
         with(rvUserList) {
-            mUserListAdapter = UserListAdapter()
+            mUserListAdapter = UserListAdapter { username ->
+                if (username.isBlank().not()) {
+                    viewModel.triggerUserClick(username = username)
+                }
+            }
             adapter = mUserListAdapter
         }
     }

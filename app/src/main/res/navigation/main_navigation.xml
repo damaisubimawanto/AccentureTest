@@ -3,12 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/home_user_list">
+    app:startDestination="@id/home_user_list_page">
 
     <fragment
-        android:id="@+id/home_user_list"
+        android:id="@+id/home_user_list_page"
         android:name="com.damai.accenturetest.ui.home.HomeUserListFragment"
         android:label="Home User List"
-        tools:layout="@layout/fragment_home_user_list" />
+        tools:layout="@layout/fragment_home_user_list">
+
+        <action
+            android:id="@+id/action_home_user_list_to_user_details"
+            app:destination="@id/user_details_page">
+
+            <argument
+                android:name="username"
+                app:argType="string"
+                android:defaultValue="" />
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/user_details_page"
+        android:name="com.damai.accenturetest.ui.detail.adapter.UserDetailsFragment"
+        android:label="User Details"
+        tools:layout="@layout/fragment_user_details" />
 
 </navigation>

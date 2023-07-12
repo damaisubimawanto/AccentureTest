@@ -2,12 +2,17 @@ package com.damai.accenturetest.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import com.damai.accenturetest.R
 import com.damai.accenturetest.application.MyApplication
 import com.damai.accenturetest.databinding.FragmentHomeUserListBinding
 import com.damai.accenturetest.ui.MainViewModel
 import com.damai.accenturetest.ui.home.adapter.HomePagerAdapter
 import com.damai.base.BaseFragment
+import com.damai.base.extensions.navigateTo
+import com.damai.base.extensions.observe
+import com.damai.base.utils.Constants.BUNDLE_ARGS_USERNAME
+import com.damai.base.utils.EventObserver
 import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
 
@@ -34,7 +39,7 @@ class HomeUserListFragment : BaseFragment<FragmentHomeUserListBinding, MainViewM
 
     override fun FragmentHomeUserListBinding.viewInitialization() {
         with(vpUserList) {
-            mHomePagerAdapter = HomePagerAdapter(this@HomeUserListFragment)
+            mHomePagerAdapter = HomePagerAdapter(fragment = this@HomeUserListFragment)
             adapter = mHomePagerAdapter
         }
 
@@ -46,5 +51,14 @@ class HomeUserListFragment : BaseFragment<FragmentHomeUserListBinding, MainViewM
                 }
             }.attach()
         }
+    }
+
+    override fun FragmentHomeUserListBinding.setupObservers() {
+        observe(viewModel.userClickedLiveData, EventObserver {
+            navigateTo(
+                resId = R.id.action_home_user_list_to_user_details,
+                bundle = bundleOf(BUNDLE_ARGS_USERNAME to it)
+            )
+        })
     }
 }
