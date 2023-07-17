@@ -6,6 +6,7 @@ import com.damai.data.mappers.UserDetailsResponseToUserDetailsModelMapper
 import com.damai.data.mappers.UserDetailsResponseToUserEntityMapper
 import com.damai.data.repos.UserDetailsListPagingSource
 import com.damai.data.repos.UserDetailsListRemoteMediator
+import com.damai.domain.daos.RemoteKeyDao
 import com.damai.domain.daos.UserDao
 import dagger.Module
 import dagger.Provides
@@ -31,12 +32,14 @@ class PagingSourceModules {
     fun provideUserDetailsListRemoteMediator(
         mainService: MainService,
         userDao: UserDao,
+        remoteKeyDao: RemoteKeyDao,
         userSharedPreferencesHelper: UserSharedPreferencesHelper,
         userDetailsResponseToUserEntityMapper: UserDetailsResponseToUserEntityMapper
     ): UserDetailsListRemoteMediator {
         return UserDetailsListRemoteMediator(
             mainService = mainService,
             userDao = userDao,
+            remoteKeyDao = remoteKeyDao,
             userSharedPreferencesHelper = userSharedPreferencesHelper,
             userDetailsToUserEntityMapper = userDetailsResponseToUserEntityMapper
         )
