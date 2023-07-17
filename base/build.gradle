@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 apply from: "${rootProject.rootDir}/dependencies.gradle"
 
@@ -52,6 +53,8 @@ dependencies {
     api squareup.retrofit2
     api squareup.retrofit_coroutines_adapter
     api squareup.retrofit_gson_converter
+
+    kapt glide.compiler
 
     androidTestApi test_library.androidx_test_espresso
     androidTestApi test_library.androidx_test_extension

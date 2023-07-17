@@ -24,7 +24,7 @@ class UserDetailsViewModel @Inject constructor(
     private val _userFavoritedLiveData = MutableLiveData(false)
     val userFavoritedLiveData = _userFavoritedLiveData.asLiveData()
 
-    private val _userDetailsLiveData = MutableLiveData<Event<UserDetailsModel>>()
+    private val _userDetailsLiveData = MutableLiveData<UserDetailsModel>()
     val userDetailsLiveData = _userDetailsLiveData.asLiveData()
 
     private val _userDetailsErrorLiveData = MutableLiveData<Event<String>>()
@@ -35,13 +35,18 @@ class UserDetailsViewModel @Inject constructor(
     var clickedUsername: String? = null
     //endregion `Variables`
 
-    fun getUserDetails(username: String) {
+    fun getUserDetails() {
+        clickedUsername.takeIf { it.isNullOrBlank().not() } ?: run {
+            Event("Duh! Empty username!").let(_userDetailsErrorLiveData::setValue)
+            return
+        }
+
         viewModelScope.launch(dispatcherProvider.io()) {
-            userDetailsUseCase(username).collect { resource ->
+            userDetailsUseCase(clickedUsername).collect { resource ->
                 when (resource) {
                     is Resource.Success -> {
                         resource.model?.let { dataModel ->
-                            Event(dataModel).let(_userDetailsLiveData::postValue)
+                            _userDetailsLiveData.postValue(dataModel)
                         } ?: run {
                             Event("Duh! Empty nih boss!").let(
                                 _userDetailsErrorLiveData::postValue

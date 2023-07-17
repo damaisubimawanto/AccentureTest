@@ -8,6 +8,7 @@ import com.damai.base.BaseFragment
 import com.damai.base.extensions.gone
 import com.damai.base.extensions.loadImageWithCenterCrop
 import com.damai.base.extensions.observe
+import com.damai.base.extensions.popBackStack
 import com.damai.base.extensions.setCustomOnClickListener
 import com.damai.base.extensions.showToastMessage
 import com.damai.base.extensions.visible
@@ -44,6 +45,10 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding, UserDetails
         rlFavoriteButton.setCustomOnClickListener {
             viewModel.setUserFavorite()
         }
+
+        toolbar.setNavigationOnClickListener {
+            popBackStack()
+        }
     }
 
     override fun FragmentUserDetailsBinding.setupObservers() {
@@ -57,10 +62,10 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding, UserDetails
             }
         }
 
-        observe(viewModel.userDetailsLiveData, EventObserver {
+        observe(viewModel.userDetailsLiveData) {
             tvUserName.text = it.name
             ivPhotoProfile.loadImageWithCenterCrop(url = it.avatarUrl)
-        })
+        }
 
         observe(viewModel.userDetailsErrorLiveData, EventObserver {
             requireContext().showToastMessage(message = it)
@@ -68,8 +73,6 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding, UserDetails
     }
 
     override fun FragmentUserDetailsBinding.onPreparationFinished() {
-        viewModel.clickedUsername?.let {
-            viewModel.getUserDetails(username = it)
-        }
+        viewModel.getUserDetails()
     }
 }

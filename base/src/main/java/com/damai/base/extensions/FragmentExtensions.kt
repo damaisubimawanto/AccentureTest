@@ -44,6 +44,10 @@ fun Fragment.navigateTo(@IdRes resId: Int, bundle: Bundle? = null) {
     }
 }
 
+fun Fragment.popBackStack(): Boolean {
+    return findNavController().popBackStack()
+}
+
 fun Fragment.debugError(message: String? = null, error: Throwable) {
     var tag = this::class.java.simpleName
     if (tag.length > 23) {
