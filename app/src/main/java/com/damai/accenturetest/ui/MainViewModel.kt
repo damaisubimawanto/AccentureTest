@@ -3,6 +3,7 @@ package com.damai.accenturetest.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -10,7 +11,9 @@ import androidx.paging.cachedIn
 import com.damai.base.extensions.asLiveData
 import com.damai.base.utils.Event
 import com.damai.data.repos.UserDetailsListPagingSource
-import com.damai.domain.models.UserDetailsModel
+import com.damai.data.repos.UserDetailsListRemoteMediator
+import com.damai.domain.daos.UserDao
+import com.damai.domain.entities.UserEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,7 +23,9 @@ import javax.inject.Singleton
  */
 @Singleton
 class MainViewModel @Inject constructor(
-    private val userListPaging: UserDetailsListPagingSource
+    private val userListPaging: UserDetailsListPagingSource,
+    private val userListRemoteMediator: UserDetailsListRemoteMediator,
+    private val userDao: UserDao
 ) : ViewModel() {
 
     //region Live Data
@@ -33,11 +38,14 @@ class MainViewModel @Inject constructor(
         Event(username).let(_userClickedLiveData::setValue)
     }
 
-    fun getUserList(): Flow<PagingData<UserDetailsModel>> {
+    @OptIn(ExperimentalPagingApi::class)
+    fun getUserList(): Flow<PagingData<UserEntity>> {
         return Pager(
             config = PagingConfig(pageSize = 20, maxSize = 500),
-            pagingSourceFactory = { userListPaging }
-        ).flow.cachedIn(viewModelScope)
+            remoteMediator = userListRemoteMediator
+        ) {
+            userDao.pagingSource(query = "")
+        }.flow.cachedIn(viewModelScope)
     }
     //endregion `Public Functions`
 }

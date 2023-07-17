@@ -19,5 +19,7 @@ object Constants {
 
     const val BUNDLE_ARGS_USERNAME = "username"
 
+    const val PREFERENCE_KEY_USER_LIST_LAST_TIME_UPDATED = "keyUserListLastTimeUpdated"
+
     val NEXT_PATTERN = "(?<=<)(\\S*)(?=>; rel=\"next\")".toRegex()
 }

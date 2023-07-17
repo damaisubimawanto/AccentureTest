@@ -50,7 +50,7 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, MainViewModel>() 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getUserList().collectLatest {
-                    mUserListAdapter.submitData(it)
+                    /*mUserListAdapter.submitData(it)*/
                 }
             }
         }

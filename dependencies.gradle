@@ -25,6 +25,12 @@ ext {
             compiler                            : 'com.github.bumptech.glide:compiler:4.15.1'
     ]
 
+    room = [
+            compiler                            : 'androidx.room:room-compiler:2.5.2',
+            paging                              : 'androidx.room:room-paging:2.5.2',
+            runtime                             : 'androidx.room:room-runtime:2.5.2'
+    ]
+
     squareup = [
             okhttp3                             : 'com.squareup.okhttp3:logging-interceptor:4.9.0',
             retrofit2                           : 'com.squareup.retrofit2:retrofit:2.9.0',

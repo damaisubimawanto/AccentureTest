@@ -49,12 +49,16 @@ dependencies {
 
     api glide.core
 
+    api room.runtime
+    api room.paging
+
     api squareup.okhttp3
     api squareup.retrofit2
     api squareup.retrofit_coroutines_adapter
     api squareup.retrofit_gson_converter
 
     kapt glide.compiler
+    kapt room.compiler
 
     androidTestApi test_library.androidx_test_espresso
     androidTestApi test_library.androidx_test_extension
