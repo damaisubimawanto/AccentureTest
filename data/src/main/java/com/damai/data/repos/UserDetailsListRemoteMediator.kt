@@ -1,9 +1,12 @@
 package com.damai.data.repos
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import com.damai.base.extensions.nextLinkKey
+import com.damai.base.utils.Constants.HEADER_LINK_NAME
 import com.damai.base.utils.UserSharedPreferencesHelper
 import com.damai.data.apiservices.MainService
 import com.damai.data.mappers.UserDetailsResponseToUserEntityMapper
@@ -50,24 +53,32 @@ class UserDetailsListRemoteMediator @Inject constructor(
             }
 
             val response = mainService.getUserListAsync(since = loadKey).await()
+
+            /* Get the next key from response headers. */
+            val headers = response.headers()
+            val link = headers[HEADER_LINK_NAME]
+            val nextKey = link.nextLinkKey()
+            Log.d(TAG, "UserDetailsListRemoteMediator -> load() -> link header = $link, next key = $nextKey")
+
             if (loadType == LoadType.REFRESH) {
-                remoteKeyDao.deleteByQuery(query = "")
+                remoteKeyDao.deleteByQuery(query = nextKey?.toString().orEmpty())
                 userDao.clearAll()
             }
+
             response.body()?.let { _body ->
                 remoteKeyDao.insertOrReplace(
                     RemoteKeyEntity(
                         label = "",
-                        nextKey = 1
+                        nextKey = nextKey
                     )
                 )
 
                 userDao.insertAll(
-                    userDetailsToUserEntityMapper.map(_body)
+                    userDetailsToUserEntityMapper.setSince(since = nextKey).map(_body)
                 )
             }
 
-            MediatorResult.Success(endOfPaginationReached = response.body().isNullOrEmpty())
+            MediatorResult.Success(endOfPaginationReached = nextKey == null)
         } catch (e: IOException) {
             MediatorResult.Error(e)
         } catch (e: HttpException) {
@@ -86,5 +97,9 @@ class UserDetailsListRemoteMediator @Inject constructor(
         } else {
             InitializeAction.LAUNCH_INITIAL_REFRESH
         }
+    }
+
+    companion object {
+        private const val TAG = "UserListRemote"
     }
 }

@@ -2,6 +2,7 @@ package com.damai.accenturetest.dagger
 
 import com.damai.data.mappers.UserDetailsResponseToUserDetailsModelMapper
 import com.damai.data.mappers.UserDetailsResponseToUserEntityMapper
+import com.damai.data.mappers.UserEntityToUserDetailsModelMapper
 import dagger.Module
 import dagger.Provides
 
@@ -19,5 +20,10 @@ class MapperModules {
     @Provides
     fun provideUserDetailsResponseToUserEntityMapper(): UserDetailsResponseToUserEntityMapper {
         return UserDetailsResponseToUserEntityMapper()
+    }
+
+    @Provides
+    fun provideUserEntityToUserDetailsModelMapper(): UserEntityToUserDetailsModelMapper {
+        return UserEntityToUserDetailsModelMapper()
     }
 }
