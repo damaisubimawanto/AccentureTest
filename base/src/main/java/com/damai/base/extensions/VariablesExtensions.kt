@@ -17,8 +17,8 @@ fun String?.nextLinkKey(): Int? {
     return if (this?.contains("rel=\"next\"") == true) {
         val matchResult = NEXT_PATTERN.find(this)
         val resultValue = matchResult?.value
-        resultValue?.let { _resultValue ->
-            val nextLinkUri = Uri.parse(_resultValue)
+        resultValue?.let {
+            val nextLinkUri = Uri.parse(it)
             nextLinkUri.getQueryParameter(QUERY_PARAM_SINCE)?.toIntOrNull()
         }
     } else null

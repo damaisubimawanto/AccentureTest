@@ -26,7 +26,6 @@ import javax.inject.Singleton
  */
 @Singleton
 class MainViewModel @Inject constructor(
-    private val userListPaging: UserDetailsListPagingSource,
     private val userListRemoteMediator: UserDetailsListRemoteMediator,
     private val userDao: UserDao,
     private val userEntityToUserDetailsModelMapper: UserEntityToUserDetailsModelMapper

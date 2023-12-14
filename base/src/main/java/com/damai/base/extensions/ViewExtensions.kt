@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewbinding.ViewBinding
-import com.damai.base.glide.GlideApp
+import com.bumptech.glide.Glide
 
 /**
  * Created by damai007 on 11/July/2023
@@ -38,7 +38,7 @@ fun View.setCustomOnClickListener(listener: View.OnClickListener) {
 fun AppCompatImageView.loadImageWithCenterCrop(
     url: String?
 ) {
-    GlideApp.with(context)
+    Glide.with(context)
         .load(url)
         .into(this)
 }

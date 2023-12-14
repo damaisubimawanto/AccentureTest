@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
 }
 apply from: "${rootProject.rootDir}/dependencies.gradle"
 
@@ -49,6 +49,7 @@ dependencies {
 
     api glide.core
 
+    api room.coroutine
     api room.runtime
     api room.paging
 
@@ -57,8 +58,8 @@ dependencies {
     api squareup.retrofit_coroutines_adapter
     api squareup.retrofit_gson_converter
 
-    kapt glide.compiler
-    kapt room.compiler
+    ksp glide.compiler
+    ksp room.compiler
 
     androidTestApi test_library.androidx_test_espresso
     androidTestApi test_library.androidx_test_extension

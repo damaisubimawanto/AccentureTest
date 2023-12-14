@@ -44,11 +44,17 @@ class UserDetailsListRemoteMediator @Inject constructor(
                 }
 
                 LoadType.APPEND -> {
-                    val remoteKeyEntity = remoteKeyDao.remoteKeyByQuery(query = "")
-                    if (remoteKeyEntity.nextKey == null) {
-                        return MediatorResult.Success(endOfPaginationReached = true)
-                    }
-                    remoteKeyEntity.nextKey
+                    state.pages.lastOrNull {
+                        it.data.isNotEmpty()
+                    }?.data?.lastOrNull()?.let { userEntity ->
+                        val remoteKeyEntity = remoteKeyDao.remoteKeyByQuery(
+                            query = userEntity.username.orEmpty()
+                        )
+                        if (remoteKeyEntity.nextKey == null) {
+                            return MediatorResult.Success(endOfPaginationReached = true)
+                        }
+                        remoteKeyEntity.nextKey
+                    } ?: return MediatorResult.Success(endOfPaginationReached = true)
                 }
             }
 
@@ -65,7 +71,7 @@ class UserDetailsListRemoteMediator @Inject constructor(
                 userDao.clearAll()
             }
 
-            response.body()?.let { _body ->
+            response.body()?.let { body ->
                 remoteKeyDao.insertOrReplace(
                     RemoteKeyEntity(
                         label = "",
@@ -74,7 +80,7 @@ class UserDetailsListRemoteMediator @Inject constructor(
                 )
 
                 userDao.insertAll(
-                    userDetailsToUserEntityMapper.setSince(since = nextKey).map(_body)
+                    userDetailsToUserEntityMapper.setSince(since = nextKey).map(body)
                 )
             }
 

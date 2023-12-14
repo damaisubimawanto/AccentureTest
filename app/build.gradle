@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
 }
 apply from: "${rootProject.rootDir}/dependencies.gradle"
 
@@ -32,6 +32,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+    kotlin {
+        jvmToolchain(17)
+    }
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
@@ -39,6 +42,22 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+    androidComponents {
+        onVariants(selector().all(), { variant ->
+            afterEvaluate {
+                // This is a workaround for https://issuetracker.google.com/301245705 which depends on internal
+                // implementations of the android gradle plugin and the ksp gradle plugin which might change in the future
+                // in an unpredictable way.
+                project.tasks.getByName("ksp" + variant.name.capitalize() + "Kotlin") {
+                    def dataBindingTask = (com.android.build.gradle.internal.tasks.databinding.DataBindingGenBaseClassesTask) project.tasks.getByName("dataBindingGenBaseClasses" + variant.name.capitalize())
+
+                    ((org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompileTool) it).setSource(
+                            dataBindingTask.sourceOutFolder
+                    )
+                }
+            }
+        })
     }
 }
 
@@ -48,7 +67,8 @@ dependencies {
     implementation project(':data')
     implementation project(':domain')
 
-    kapt dagger.compiler
+    ksp dagger.compiler
+    ksp room.compiler
 
     testImplementation test_library.androidx_core_test
     testImplementation test_library.androidx_test_espresso
