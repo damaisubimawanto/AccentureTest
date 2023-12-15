@@ -14,7 +14,8 @@ interface MainService {
 
     @GET("/users")
     fun getUserListAsync(
-        @Query("since") since: Int?
+        @Query("since") since: Int?,
+        @Query("per_page") perPage: Int
     ): Deferred<Response<List<UserDetailsResponse>>>
 
     @GET("users/{username}")

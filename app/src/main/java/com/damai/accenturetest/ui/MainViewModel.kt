@@ -10,6 +10,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.damai.base.extensions.asLiveData
+import com.damai.base.utils.Constants.NETWORK_PAGE_SIZE
 import com.damai.base.utils.Event
 import com.damai.data.mappers.UserEntityToUserDetailsModelMapper
 import com.damai.data.repos.UserDetailsListPagingSource
@@ -44,7 +45,11 @@ class MainViewModel @Inject constructor(
 
     fun getUserList(): Flow<PagingData<UserDetailsModel>> {
         return Pager(
-            config = PagingConfig(pageSize = 20, maxSize = 500),
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                prefetchDistance = 10,
+                maxSize = 500
+            ),
             pagingSourceFactory = { userListPaging }
         ).flow.cachedIn(viewModelScope)
     }

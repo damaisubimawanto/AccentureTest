@@ -22,4 +22,6 @@ object Constants {
     const val PREFERENCE_KEY_USER_LIST_LAST_TIME_UPDATED = "keyUserListLastTimeUpdated"
 
     val NEXT_PATTERN = "(?<=<)(\\S*)(?=>; rel=\"next\")".toRegex()
+
+    const val NETWORK_PAGE_SIZE = 50
 }

@@ -7,6 +7,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.damai.base.extensions.nextLinkKey
 import com.damai.base.utils.Constants.HEADER_LINK_NAME
+import com.damai.base.utils.Constants.NETWORK_PAGE_SIZE
 import com.damai.base.utils.UserSharedPreferencesHelper
 import com.damai.data.apiservices.MainService
 import com.damai.data.mappers.UserDetailsResponseToRemoteKeyEntityMapper
@@ -62,7 +63,10 @@ class UserDetailsListRemoteMediator @Inject constructor(
                 }
             }
 
-            val response = mainService.getUserListAsync(since = loadKey).await()
+            val response = mainService.getUserListAsync(
+                since = loadKey,
+                perPage = NETWORK_PAGE_SIZE
+            ).await()
 
             /* Get the next key from response headers. */
             val headers = response.headers()
