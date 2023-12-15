@@ -13,11 +13,14 @@ import com.damai.domain.entities.RemoteKeyEntity
 interface RemoteKeyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrReplace(remoteKey: RemoteKeyEntity)
+    suspend fun insertAll(remoteKeys: List<RemoteKeyEntity>)
 
     @Query("SELECT * FROM remote_keys WHERE label = :query")
     suspend fun remoteKeyByQuery(query: String): RemoteKeyEntity
 
     @Query("DELETE FROM remote_keys WHERE label = :query")
     suspend fun deleteByQuery(query: String)
+
+    @Query("DELETE FROM remote_keys")
+    suspend fun clearAll()
 }

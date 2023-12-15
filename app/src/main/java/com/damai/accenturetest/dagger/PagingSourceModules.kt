@@ -2,6 +2,7 @@ package com.damai.accenturetest.dagger
 
 import com.damai.base.utils.UserSharedPreferencesHelper
 import com.damai.data.apiservices.MainService
+import com.damai.data.mappers.UserDetailsResponseToRemoteKeyEntityMapper
 import com.damai.data.mappers.UserDetailsResponseToUserDetailsModelMapper
 import com.damai.data.mappers.UserDetailsResponseToUserEntityMapper
 import com.damai.data.repos.UserDetailsListPagingSource
@@ -34,14 +35,16 @@ class PagingSourceModules {
         userDao: UserDao,
         remoteKeyDao: RemoteKeyDao,
         userSharedPreferencesHelper: UserSharedPreferencesHelper,
-        userDetailsResponseToUserEntityMapper: UserDetailsResponseToUserEntityMapper
+        userDetailsResponseToUserEntityMapper: UserDetailsResponseToUserEntityMapper,
+        userDetailsResponseToRemoteKeyEntityMapper: UserDetailsResponseToRemoteKeyEntityMapper
     ): UserDetailsListRemoteMediator {
         return UserDetailsListRemoteMediator(
             mainService = mainService,
             userDao = userDao,
             remoteKeyDao = remoteKeyDao,
             userSharedPreferencesHelper = userSharedPreferencesHelper,
-            userDetailsToUserEntityMapper = userDetailsResponseToUserEntityMapper
+            userDetailsToUserEntityMapper = userDetailsResponseToUserEntityMapper,
+            userDetailsToRemoteKeyEntityMapper = userDetailsResponseToRemoteKeyEntityMapper
         )
     }
 }

@@ -26,6 +26,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class MainViewModel @Inject constructor(
+    private val userListPaging: UserDetailsListPagingSource,
     private val userListRemoteMediator: UserDetailsListRemoteMediator,
     private val userDao: UserDao,
     private val userEntityToUserDetailsModelMapper: UserEntityToUserDetailsModelMapper
@@ -41,13 +42,26 @@ class MainViewModel @Inject constructor(
         Event(username).let(_userClickedLiveData::setValue)
     }
 
-    @OptIn(ExperimentalPagingApi::class)
     fun getUserList(): Flow<PagingData<UserDetailsModel>> {
         return Pager(
             config = PagingConfig(pageSize = 20, maxSize = 500),
+            pagingSourceFactory = { userListPaging }
+        ).flow.cachedIn(viewModelScope)
+    }
+
+    /**
+     * This function is for getting user list by query string.
+     *
+     * @param queryString   The query of username.
+     * @return  A paging data which contains of selected user detail model list.
+     */
+    @OptIn(ExperimentalPagingApi::class)
+    fun getUserList(queryString: String): Flow<PagingData<UserDetailsModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20, maxSize = 500),
             remoteMediator = userListRemoteMediator
-        ) { /* pagingSourceFactory */
-            userDao.pagingSource(query = "")
+        ) { /*pagingSourceFactory*/
+            userDao.pagingSource(query = "mojombo")
         }.flow.map { userEntityPagingData ->
             userEntityPagingData.map { userEntity ->
                 userEntityToUserDetailsModelMapper.map(userEntity)

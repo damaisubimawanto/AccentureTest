@@ -9,10 +9,10 @@ import com.damai.base.extensions.nextLinkKey
 import com.damai.base.utils.Constants.HEADER_LINK_NAME
 import com.damai.base.utils.UserSharedPreferencesHelper
 import com.damai.data.apiservices.MainService
+import com.damai.data.mappers.UserDetailsResponseToRemoteKeyEntityMapper
 import com.damai.data.mappers.UserDetailsResponseToUserEntityMapper
 import com.damai.domain.daos.RemoteKeyDao
 import com.damai.domain.daos.UserDao
-import com.damai.domain.entities.RemoteKeyEntity
 import com.damai.domain.entities.UserEntity
 import retrofit2.HttpException
 import java.io.IOException
@@ -28,7 +28,8 @@ class UserDetailsListRemoteMediator @Inject constructor(
     private val userDao: UserDao,
     private val remoteKeyDao: RemoteKeyDao,
     private val userSharedPreferencesHelper: UserSharedPreferencesHelper,
-    private val userDetailsToUserEntityMapper: UserDetailsResponseToUserEntityMapper
+    private val userDetailsToUserEntityMapper: UserDetailsResponseToUserEntityMapper,
+    private val userDetailsToRemoteKeyEntityMapper: UserDetailsResponseToRemoteKeyEntityMapper
 ) : RemoteMediator<Int, UserEntity>() {
 
     override suspend fun load(
@@ -44,9 +45,12 @@ class UserDetailsListRemoteMediator @Inject constructor(
                 }
 
                 LoadType.APPEND -> {
-                    state.pages.lastOrNull {
+                    // Get the first page that was retrieved, that contained items.
+                    // From that first page, get the first item
+                    state.pages.firstOrNull {
                         it.data.isNotEmpty()
-                    }?.data?.lastOrNull()?.let { userEntity ->
+                    }?.data?.firstOrNull()?.let { userEntity ->
+                        // Get the remote keys of the first items retrieved
                         val remoteKeyEntity = remoteKeyDao.remoteKeyByQuery(
                             query = userEntity.username.orEmpty()
                         )
@@ -64,34 +68,39 @@ class UserDetailsListRemoteMediator @Inject constructor(
             val headers = response.headers()
             val link = headers[HEADER_LINK_NAME]
             val nextKey = link.nextLinkKey()
-            Log.d(TAG, "UserDetailsListRemoteMediator -> load() -> link header = $link, next key = $nextKey")
+            Log.d(TAG, "UserDetailsListRemoteMediator -> load() -> link header = $link, next key = $nextKey, load type = $loadType")
 
             if (loadType == LoadType.REFRESH) {
-                remoteKeyDao.deleteByQuery(query = nextKey?.toString().orEmpty())
+                remoteKeyDao.clearAll()
                 userDao.clearAll()
             }
 
             response.body()?.let { body ->
-                remoteKeyDao.insertOrReplace(
-                    RemoteKeyEntity(
-                        label = "",
-                        nextKey = nextKey
-                    )
-                )
+                userDetailsToRemoteKeyEntityMapper.setNextKey(nextKey = nextKey)
+                    .map(body)
+                    .let { remoteKeys ->
+                        remoteKeyDao.insertAll(remoteKeys = remoteKeys)
+                    }
 
-                userDao.insertAll(
-                    userDetailsToUserEntityMapper.setSince(since = nextKey).map(body)
-                )
+                userDetailsToUserEntityMapper.setSince(since = nextKey)
+                    .map(body)
+                    .let { users ->
+                        userDao.insertAll(users = users)
+                    }
             }
 
-            MediatorResult.Success(endOfPaginationReached = nextKey == null)
+            MediatorResult.Success(endOfPaginationReached = response.body().isNullOrEmpty())
         } catch (e: IOException) {
+            Log.e(TAG, "UserDetailsListRemoteMediator => ERROR!", e)
             MediatorResult.Error(e)
         } catch (e: HttpException) {
+            Log.e(TAG, "UserDetailsListRemoteMediator => ERROR!", e)
             MediatorResult.Error(e)
         } catch (e: RuntimeException) {
+            Log.e(TAG, "UserDetailsListRemoteMediator => ERROR!", e)
             MediatorResult.Error(e)
         } catch (e: Exception) {
+            Log.e(TAG, "UserDetailsListRemoteMediator => ERROR!", e)
             MediatorResult.Error(e)
         }
     }
