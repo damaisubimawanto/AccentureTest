@@ -24,4 +24,5 @@ object Constants {
     val NEXT_PATTERN = "(?<=<)(\\S*)(?=>; rel=\"next\")".toRegex()
 
     const val NETWORK_PAGE_SIZE = 50
+    const val PREFETCH_DISTANCE = 10
 }

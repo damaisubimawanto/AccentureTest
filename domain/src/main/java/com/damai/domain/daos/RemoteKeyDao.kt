@@ -16,7 +16,10 @@ interface RemoteKeyDao {
     suspend fun insertAll(remoteKeys: List<RemoteKeyEntity>)
 
     @Query("SELECT * FROM remote_keys WHERE userId = :userId")
-    suspend fun remoteKeyByUserId(userId: Int): RemoteKeyEntity
+    suspend fun remoteKeyByUserId(userId: Int): RemoteKeyEntity?
+
+    @Query("SELECT * FROM remote_keys ORDER BY nextKey DESC LIMIT 1")
+    suspend fun remoteKeyLatest(): RemoteKeyEntity
 
     @Query("DELETE FROM remote_keys")
     suspend fun clearAll()

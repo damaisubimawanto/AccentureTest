@@ -10,6 +10,8 @@ import com.damai.accenturetest.databinding.FragmentUserListBinding
 import com.damai.accenturetest.ui.MainViewModel
 import com.damai.accenturetest.ui.home.adapter.UserListAdapter
 import com.damai.base.BaseFragment
+import com.damai.base.extensions.observe
+import com.damai.base.utils.EventObserver
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,10 +48,17 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, MainViewModel>() 
         }
     }
 
+    override fun FragmentUserListBinding.setupObservers() {
+        observe(viewModel.userSearchLiveData, EventObserver { searchQuery ->
+            viewModel.mQueryText = searchQuery
+            mUserListAdapter.refresh()
+        })
+    }
+
     override fun FragmentUserListBinding.onPreparationFinished() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.getUserList(queryString = "").collectLatest {
+                viewModel.getUserList().collectLatest {
                     mUserListAdapter.submitData(it)
                 }
             }

@@ -19,7 +19,7 @@ interface UserDao {
     @Query("SELECT * FROM users")
     fun pagingSourceAll(): PagingSource<Int, UserEntity>
 
-    @Query("SELECT * FROM users WHERE username LIKE :query")
+    @Query("SELECT * FROM users WHERE username LIKE '%' || :query || '%'")
     fun pagingSource(query: String): PagingSource<Int, UserEntity>
 
     @Query("DELETE FROM users")

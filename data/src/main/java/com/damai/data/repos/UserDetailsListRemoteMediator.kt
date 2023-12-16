@@ -32,7 +32,8 @@ class UserDetailsListRemoteMediator(
     private val remoteKeyDao: RemoteKeyDao,
     private val userSharedPreferencesHelper: UserSharedPreferencesHelper,
     private val userDetailsToUserEntityMapper: UserDetailsResponseToUserEntityMapper,
-    private val userDetailsToRemoteKeyEntityMapper: UserDetailsResponseToRemoteKeyEntityMapper
+    private val userDetailsToRemoteKeyEntityMapper: UserDetailsResponseToRemoteKeyEntityMapper,
+    private val remoteInterface: RemoteMediatorInterface
 ) : RemoteMediator<Int, UserEntity>() {
 
     override suspend fun load(
@@ -48,23 +49,32 @@ class UserDetailsListRemoteMediator(
                 }
 
                 LoadType.APPEND -> {
-                    // Get the last page that was retrieved, that contained items.
-                    // From that last page, get the last item
-                    state.pages.lastOrNull {
-                        it.data.isNotEmpty()
-                    }?.data?.lastOrNull()?.let { userEntity ->
-                        // Get the remote keys of the first items retrieved
-                        val remoteKeyEntity = remoteKeyDao.remoteKeyByUserId(
-                            userId = userEntity.id
-                        )
+                    if (remoteInterface.getQuery().isBlank()) {
+                        // Get the last page that was retrieved, that contained items.
+                        // From that last page, get the last item
+                        state.pages.lastOrNull {
+                            it.data.isNotEmpty()
+                        }?.data?.lastOrNull()?.let { userEntity ->
+                            // Get the remote keys of the first items retrieved
+                            val remoteKeyEntity = remoteKeyDao.remoteKeyByUserId(
+                                userId = userEntity.id
+                            )
+                            Log.d(TAG, "RemoteMediator -> APPEND -> user entity ID = ${userEntity.id}, remote next key = ${remoteKeyEntity?.nextKey}")
+                            if (remoteKeyEntity?.nextKey == null) {
+                                return MediatorResult.Success(endOfPaginationReached = true)
+                            }
+                            remoteKeyEntity.nextKey
+                        } ?: run {
+                            Log.d(TAG, "RemoteMediator -> APPEND -> Last data is null")
+                            return MediatorResult.Success(endOfPaginationReached = true)
+                        }
+                    } else {
+                        val remoteKeyEntity = remoteKeyDao.remoteKeyLatest()
+                        Log.d(TAG, "RemoteMediator -> APPEND -> latest remote next key = ${remoteKeyEntity.nextKey}")
                         if (remoteKeyEntity.nextKey == null) {
-                            Log.d(TAG, "RemoteMediator -> APPEND -> Remote next key is null")
                             return MediatorResult.Success(endOfPaginationReached = true)
                         }
                         remoteKeyEntity.nextKey
-                    } ?: run {
-                        Log.d(TAG, "RemoteMediator -> APPEND -> Last data is null")
-                        return MediatorResult.Success(endOfPaginationReached = true)
                     }
                 }
             }
@@ -98,6 +108,9 @@ class UserDetailsListRemoteMediator(
                     }
                 }
             }
+            /*val isEndPagination = nextKey == null ||
+                    response.body().isNullOrEmpty() ||
+                    response.body()*/
             Log.d(TAG, "MediatorResult.Success => end of pagination reached = ${nextKey == null}")
             MediatorResult.Success(endOfPaginationReached = nextKey == null)
         } catch (e: IOException) {
@@ -127,4 +140,8 @@ class UserDetailsListRemoteMediator(
     companion object {
         private const val TAG = "UserListRemote"
     }
+}
+
+interface RemoteMediatorInterface {
+    fun getQuery(): String
 }

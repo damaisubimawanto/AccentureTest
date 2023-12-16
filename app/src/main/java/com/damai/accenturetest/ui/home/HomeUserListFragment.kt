@@ -21,6 +21,8 @@ import com.damai.base.extensions.visible
 import com.damai.base.utils.Constants.BUNDLE_ARGS_USERNAME
 import com.damai.base.utils.EventObserver
 import com.google.android.material.tabs.TabLayoutMediator
+import java.util.Timer
+import java.util.TimerTask
 import javax.inject.Inject
 
 /**
@@ -29,6 +31,8 @@ import javax.inject.Inject
 class HomeUserListFragment : BaseFragment<FragmentHomeUserListBinding, MainViewModel>() {
 
     private lateinit var mHomePagerAdapter: HomePagerAdapter
+
+    private var mSearchTimer: Timer? = null
 
     @Inject
     override lateinit var viewModel: MainViewModel
@@ -61,14 +65,25 @@ class HomeUserListFragment : BaseFragment<FragmentHomeUserListBinding, MainViewM
 
         with(etMainSearch) {
             addOnTextChanged { searchText ->
+                mSearchTimer?.cancel()
                 if (searchText.isBlank()) {
                     tvMainTitle.visible()
                     etMainSearch.gone()
                     etMainSearch.hideSoftKeyboard()
-                    viewModel.getUserList(queryString = "")
+                    viewModel.triggerUserSearch(searchText = "")
                     return@addOnTextChanged
                 }
-                viewModel.getUserList(queryString = searchText)
+
+                mSearchTimer = Timer().apply {
+                    schedule(
+                        object : TimerTask() {
+                            override fun run() {
+                                viewModel.triggerUserSearch(searchText = searchText)
+                            }
+                        },
+                        1_000L
+                    )
+                }
             }
         }
 
@@ -88,5 +103,11 @@ class HomeUserListFragment : BaseFragment<FragmentHomeUserListBinding, MainViewM
                 bundle = bundleOf(BUNDLE_ARGS_USERNAME to it)
             )
         })
+    }
+
+    override fun onDestroyView() {
+        mSearchTimer?.cancel()
+        mSearchTimer = null
+        super.onDestroyView()
     }
 }
