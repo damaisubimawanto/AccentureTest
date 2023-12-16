@@ -9,13 +9,17 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.damai.accenturetest.room.AppDatabase
 import com.damai.base.extensions.asLiveData
 import com.damai.base.utils.Constants.NETWORK_PAGE_SIZE
 import com.damai.base.utils.Event
+import com.damai.base.utils.UserSharedPreferencesHelper
+import com.damai.data.apiservices.MainService
+import com.damai.data.mappers.UserDetailsResponseToRemoteKeyEntityMapper
+import com.damai.data.mappers.UserDetailsResponseToUserEntityMapper
 import com.damai.data.mappers.UserEntityToUserDetailsModelMapper
 import com.damai.data.repos.UserDetailsListPagingSource
 import com.damai.data.repos.UserDetailsListRemoteMediator
-import com.damai.domain.daos.UserDao
 import com.damai.domain.models.UserDetailsModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -28,8 +32,11 @@ import javax.inject.Singleton
 @Singleton
 class MainViewModel @Inject constructor(
     private val userListPaging: UserDetailsListPagingSource,
-    private val userListRemoteMediator: UserDetailsListRemoteMediator,
-    private val userDao: UserDao,
+    private val mainService: MainService,
+    private val database: AppDatabase,
+    private val userSharedPreferencesHelper: UserSharedPreferencesHelper,
+    private val userDetailsToUserEntityMapper: UserDetailsResponseToUserEntityMapper,
+    private val userDetailsToRemoteKeyEntityMapper: UserDetailsResponseToRemoteKeyEntityMapper,
     private val userEntityToUserDetailsModelMapper: UserEntityToUserDetailsModelMapper
 ) : ViewModel() {
 
@@ -66,12 +73,20 @@ class MainViewModel @Inject constructor(
                 pageSize = NETWORK_PAGE_SIZE,
                 prefetchDistance = 10
             ),
-            remoteMediator = userListRemoteMediator
+            remoteMediator = UserDetailsListRemoteMediator(
+                mainService = mainService,
+                database = database,
+                userDao = database.userDao(),
+                remoteKeyDao = database.remoteKeyDao(),
+                userSharedPreferencesHelper = userSharedPreferencesHelper,
+                userDetailsToUserEntityMapper = userDetailsToUserEntityMapper,
+                userDetailsToRemoteKeyEntityMapper = userDetailsToRemoteKeyEntityMapper
+            )
         ) { /*pagingSourceFactory*/
             if (queryString.isBlank()) {
-                userDao.pagingSourceAll()
+                database.userDao().pagingSourceAll()
             } else {
-                userDao.pagingSource(query = queryString)
+                database.userDao().pagingSource(query = queryString)
             }
         }.flow.map { userEntityPagingData ->
             userEntityPagingData.map { userEntity ->

@@ -9,6 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
+        app:contentInsetEnd="@dimen/dimen_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,12 +19,54 @@
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMainTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_16"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etMainSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="@string/hint_search"
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:paddingEnd="@dimen/dimen_32"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_14"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="RtlSymmetry"
+                tools:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/rlSearchButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackground"
+                android:padding="@dimen/dimen_4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    app:srcCompat="@drawable/ic_search_24px" />
+
+            </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

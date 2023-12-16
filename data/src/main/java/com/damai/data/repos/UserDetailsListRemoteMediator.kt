@@ -20,13 +20,12 @@ import com.damai.domain.entities.UserEntity
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 /**
  * Created by damai007 on 17/July/2023
  */
 @OptIn(ExperimentalPagingApi::class)
-class UserDetailsListRemoteMediator @Inject constructor(
+class UserDetailsListRemoteMediator(
     private val mainService: MainService,
     private val database: RoomDatabase,
     private val userDao: UserDao,
