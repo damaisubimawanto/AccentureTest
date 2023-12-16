@@ -1,6 +1,7 @@
 package com.damai.data.mappers
 
 import com.damai.base.BaseMapper
+import com.damai.base.extensions.orZero
 import com.damai.data.responses.UserDetailsResponse
 import com.damai.domain.entities.RemoteKeyEntity
 
@@ -12,7 +13,7 @@ class UserDetailsResponseToRemoteKeyEntityMapper : BaseMapper<UserDetailsRespons
 
     override fun map(value: UserDetailsResponse): RemoteKeyEntity {
         return RemoteKeyEntity(
-            label = value.login.orEmpty(),
+            userId = value.id.orZero(),
             nextKey = mNextKey
         )
     }

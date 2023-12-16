@@ -8,6 +8,6 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "remote_keys")
 data class RemoteKeyEntity(
-    @PrimaryKey val label: String,
+    @PrimaryKey val userId: Int,
     val nextKey: Int?
 )

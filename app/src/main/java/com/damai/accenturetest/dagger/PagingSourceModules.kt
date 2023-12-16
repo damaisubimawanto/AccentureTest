@@ -1,5 +1,7 @@
 package com.damai.accenturetest.dagger
 
+import androidx.room.RoomDatabase
+import com.damai.accenturetest.room.AppDatabase
 import com.damai.base.utils.UserSharedPreferencesHelper
 import com.damai.data.apiservices.MainService
 import com.damai.data.mappers.UserDetailsResponseToRemoteKeyEntityMapper
@@ -32,6 +34,7 @@ class PagingSourceModules {
     @Provides
     fun provideUserDetailsListRemoteMediator(
         mainService: MainService,
+        database: AppDatabase,
         userDao: UserDao,
         remoteKeyDao: RemoteKeyDao,
         userSharedPreferencesHelper: UserSharedPreferencesHelper,
@@ -40,6 +43,7 @@ class PagingSourceModules {
     ): UserDetailsListRemoteMediator {
         return UserDetailsListRemoteMediator(
             mainService = mainService,
+            database = database,
             userDao = userDao,
             remoteKeyDao = remoteKeyDao,
             userSharedPreferencesHelper = userSharedPreferencesHelper,

@@ -5,6 +5,8 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import androidx.room.RoomDatabase
+import androidx.room.withTransaction
 import com.damai.base.extensions.nextLinkKey
 import com.damai.base.utils.Constants.HEADER_LINK_NAME
 import com.damai.base.utils.Constants.NETWORK_PAGE_SIZE
@@ -26,6 +28,7 @@ import javax.inject.Inject
 @OptIn(ExperimentalPagingApi::class)
 class UserDetailsListRemoteMediator @Inject constructor(
     private val mainService: MainService,
+    private val database: RoomDatabase,
     private val userDao: UserDao,
     private val remoteKeyDao: RemoteKeyDao,
     private val userSharedPreferencesHelper: UserSharedPreferencesHelper,
@@ -46,20 +49,24 @@ class UserDetailsListRemoteMediator @Inject constructor(
                 }
 
                 LoadType.APPEND -> {
-                    // Get the first page that was retrieved, that contained items.
-                    // From that first page, get the first item
-                    state.pages.firstOrNull {
+                    // Get the last page that was retrieved, that contained items.
+                    // From that last page, get the last item
+                    state.pages.lastOrNull {
                         it.data.isNotEmpty()
-                    }?.data?.firstOrNull()?.let { userEntity ->
+                    }?.data?.lastOrNull()?.let { userEntity ->
                         // Get the remote keys of the first items retrieved
-                        val remoteKeyEntity = remoteKeyDao.remoteKeyByQuery(
-                            query = userEntity.username.orEmpty()
+                        val remoteKeyEntity = remoteKeyDao.remoteKeyByUserId(
+                            userId = userEntity.id
                         )
                         if (remoteKeyEntity.nextKey == null) {
+                            Log.d(TAG, "RemoteMediator -> APPEND -> Remote next key is null")
                             return MediatorResult.Success(endOfPaginationReached = true)
                         }
                         remoteKeyEntity.nextKey
-                    } ?: return MediatorResult.Success(endOfPaginationReached = true)
+                    } ?: run {
+                        Log.d(TAG, "RemoteMediator -> APPEND -> Last data is null")
+                        return MediatorResult.Success(endOfPaginationReached = true)
+                    }
                 }
             }
 
@@ -74,26 +81,26 @@ class UserDetailsListRemoteMediator @Inject constructor(
             val nextKey = link.nextLinkKey()
             Log.d(TAG, "UserDetailsListRemoteMediator -> load() -> link header = $link, next key = $nextKey, load type = $loadType")
 
-            if (loadType == LoadType.REFRESH) {
-                remoteKeyDao.clearAll()
-                userDao.clearAll()
-            }
+            database.withTransaction {
+                if (loadType == LoadType.REFRESH) {
+                    remoteKeyDao.clearAll()
+                    userDao.clearAll()
+                }
 
-            response.body()?.let { body ->
-                userDetailsToRemoteKeyEntityMapper.setNextKey(nextKey = nextKey)
-                    .map(body)
-                    .let { remoteKeys ->
-                        remoteKeyDao.insertAll(remoteKeys = remoteKeys)
-                    }
+                response.body()?.let { body ->
+                    userDetailsToRemoteKeyEntityMapper.setNextKey(nextKey = nextKey)
+                        .map(body)
+                        .let { remoteKeys ->
+                            remoteKeyDao.insertAll(remoteKeys = remoteKeys)
+                        }
 
-                userDetailsToUserEntityMapper.setSince(since = nextKey)
-                    .map(body)
-                    .let { users ->
+                    userDetailsToUserEntityMapper.map(body).let { users ->
                         userDao.insertAll(users = users)
                     }
+                }
             }
-
-            MediatorResult.Success(endOfPaginationReached = response.body().isNullOrEmpty())
+            Log.d(TAG, "MediatorResult.Success => end of pagination reached = ${nextKey == null}")
+            MediatorResult.Success(endOfPaginationReached = nextKey == null)
         } catch (e: IOException) {
             Log.e(TAG, "UserDetailsListRemoteMediator => ERROR!", e)
             MediatorResult.Error(e)

@@ -16,6 +16,9 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(users: List<UserEntity>)
 
+    @Query("SELECT * FROM users")
+    fun pagingSourceAll(): PagingSource<Int, UserEntity>
+
     @Query("SELECT * FROM users WHERE username LIKE :query")
     fun pagingSource(query: String): PagingSource<Int, UserEntity>
 

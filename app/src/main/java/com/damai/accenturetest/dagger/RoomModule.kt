@@ -1,6 +1,7 @@
 package com.damai.accenturetest.dagger
 
 import android.app.Application
+import androidx.room.RoomDatabase
 import com.damai.accenturetest.room.AppDatabase
 import com.damai.domain.daos.RemoteKeyDao
 import com.damai.domain.daos.UserDao
@@ -18,6 +19,11 @@ class RoomModule {
     @Singleton
     fun provideDatabase(application: Application): AppDatabase {
         return AppDatabase.buildDatabase(application = application)
+    }
+
+    @Provides
+    fun provideRoomDatabase(appDatabase: AppDatabase): RoomDatabase {
+        return appDatabase
     }
 
     @Provides

@@ -9,11 +9,9 @@ import com.damai.domain.entities.UserEntity
  * Created by damai007 on 17/July/2023
  */
 class UserDetailsResponseToUserEntityMapper : BaseMapper<UserDetailsResponse, UserEntity>() {
-    private var mSince: Int? = null
 
     override fun map(value: UserDetailsResponse): UserEntity {
         return UserEntity(
-            since = mSince,
             username = value.login,
             id = value.id.orZero(),
             avatarUrl = value.avatarUrl,
@@ -32,10 +30,5 @@ class UserDetailsResponseToUserEntityMapper : BaseMapper<UserDetailsResponse, Us
             createdAt = value.createdAt.orEmpty(),
             updatedAt = value.updatedAt.orEmpty()
         )
-    }
-
-    fun setSince(since: Int?): UserDetailsResponseToUserEntityMapper {
-        mSince = since
-        return this
     }
 }

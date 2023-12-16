@@ -47,8 +47,7 @@ class MainViewModel @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
-                prefetchDistance = 10,
-                maxSize = 500
+                prefetchDistance = 10
             ),
             pagingSourceFactory = { userListPaging }
         ).flow.cachedIn(viewModelScope)
@@ -63,10 +62,17 @@ class MainViewModel @Inject constructor(
     @OptIn(ExperimentalPagingApi::class)
     fun getUserList(queryString: String): Flow<PagingData<UserDetailsModel>> {
         return Pager(
-            config = PagingConfig(pageSize = 20, maxSize = 500),
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                prefetchDistance = 10
+            ),
             remoteMediator = userListRemoteMediator
         ) { /*pagingSourceFactory*/
-            userDao.pagingSource(query = "mojombo")
+            if (queryString.isBlank()) {
+                userDao.pagingSourceAll()
+            } else {
+                userDao.pagingSource(query = queryString)
+            }
         }.flow.map { userEntityPagingData ->
             userEntityPagingData.map { userEntity ->
                 userEntityToUserDetailsModelMapper.map(userEntity)

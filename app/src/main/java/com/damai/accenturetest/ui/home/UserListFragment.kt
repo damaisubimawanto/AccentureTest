@@ -49,7 +49,7 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, MainViewModel>() 
     override fun FragmentUserListBinding.onPreparationFinished() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.getUserList().collectLatest {
+                viewModel.getUserList(queryString = "").collectLatest {
                     mUserListAdapter.submitData(it)
                 }
             }

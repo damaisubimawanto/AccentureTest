@@ -10,7 +10,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "users")
 data class UserEntity(
     @PrimaryKey val id: Int,
-    val since: Int?,
     val username: String?,
     @ColumnInfo(name = "avatar_url") val avatarUrl: String?,
     val url: String?,
