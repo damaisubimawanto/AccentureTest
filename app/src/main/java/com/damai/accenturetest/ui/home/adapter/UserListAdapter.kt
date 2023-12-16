@@ -5,6 +5,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.damai.accenturetest.databinding.ItemRvUserBinding
 import com.damai.accenturetest.ui.home.diff.UserComparator
+import com.damai.base.extensions.loadImageWithCenterCrop
 import com.damai.base.extensions.setCustomOnClickListener
 import com.damai.base.extensions.viewBinding
 import com.damai.domain.models.UserDetailsModel
@@ -35,6 +36,9 @@ class UserListAdapter(
         fun bind(data: UserDetailsModel?) {
             with(binding) {
                 tvUserName.text = data?.username
+                tvUserGithubUrl.text = data?.htmlUrl
+
+                ivUserPhoto.loadImageWithCenterCrop(url = data?.avatarUrl)
 
                 clMainItemLayout.setCustomOnClickListener {
                     callback.invoke(data?.username.orEmpty())

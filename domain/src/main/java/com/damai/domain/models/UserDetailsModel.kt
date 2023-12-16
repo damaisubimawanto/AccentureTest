@@ -10,6 +10,7 @@ data class UserDetailsModel(
     val id: Int,
     val avatarUrl: String?,
     val url: String?,
+    val htmlUrl: String?,
     val name: String?,
     val company: String?,
     val blog: String?,

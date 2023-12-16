@@ -16,6 +16,7 @@ class UserDetailsResponseToUserDetailsModelMapper : BaseMapper<UserDetailsRespon
             id = value?.id.orZero(),
             avatarUrl = value?.avatarUrl,
             url = value?.url,
+            htmlUrl = value?.htmlUrl,
             name = value?.name,
             company = value?.company,
             blog = value?.blog,

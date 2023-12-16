@@ -13,6 +13,7 @@ data class UserEntity(
     val username: String?,
     @ColumnInfo(name = "avatar_url") val avatarUrl: String?,
     val url: String?,
+    val htmlUrl: String?,
     val name: String?,
     val company: String?,
     val blog: String?,

@@ -40,5 +40,6 @@ fun AppCompatImageView.loadImageWithCenterCrop(
 ) {
     Glide.with(context)
         .load(url)
+        .fitCenter()
         .into(this)
 }

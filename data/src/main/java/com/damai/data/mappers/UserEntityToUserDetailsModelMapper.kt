@@ -15,6 +15,7 @@ class UserEntityToUserDetailsModelMapper : BaseMapper<UserEntity, UserDetailsMod
             id = value.id,
             avatarUrl = value.avatarUrl,
             url = value.url,
+            htmlUrl = value.htmlUrl,
             name = value.name,
             company = value.company,
             blog = value.blog,
