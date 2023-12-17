@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.damai.domain.entities.RemoteKeyEntity
 
 /**
- * Created by damai007 on 17/July/2023
+ * Created by damai007 on 16/December/2023
  */
 @Dao
 interface RemoteKeyDao {

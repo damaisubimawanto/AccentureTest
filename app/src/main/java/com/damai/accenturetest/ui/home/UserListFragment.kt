@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * Created by damai007 on 12/July/2023
+ * Created by damai007 on 16/December/2023
  */
 class UserListFragment : BaseFragment<FragmentUserListBinding, MainViewModel>() {
 

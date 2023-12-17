@@ -1,7 +1,7 @@
 package com.damai.base
 
 /**
- * Created by damai007 on 11/July/2023
+ * Created by damai007 on 16/December/2023
  */
 open class BaseModel {
     var statusCode: Int? = null

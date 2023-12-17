@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.damai.domain.models.UserDetailsModel
 
 /**
- * Created by damai007 on 11/July/2023
+ * Created by damai007 on 16/December/2023
  */
 object UserComparator : DiffUtil.ItemCallback<UserDetailsModel>() {
 

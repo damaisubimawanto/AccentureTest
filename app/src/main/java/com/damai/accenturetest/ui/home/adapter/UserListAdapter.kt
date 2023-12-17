@@ -11,7 +11,7 @@ import com.damai.base.extensions.viewBinding
 import com.damai.domain.models.UserDetailsModel
 
 /**
- * Created by damai007 on 11/July/2023
+ * Created by damai007 on 16/December/2023
  */
 class UserListAdapter(
     private val callback: (String) -> Unit

@@ -6,7 +6,7 @@ import com.damai.data.responses.UserDetailsResponse
 import com.damai.domain.entities.RemoteKeyEntity
 
 /**
- * Created by damai007 on 15/December/2023
+ * Created by damai007 on 16/December/2023
  */
 class UserDetailsResponseToRemoteKeyEntityMapper : BaseMapper<UserDetailsResponse, RemoteKeyEntity>() {
     private var mNextKey: Int? = null

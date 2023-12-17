@@ -8,7 +8,7 @@ import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 
 /**
- * Created by damai007 on 17/July/2023
+ * Created by damai007 on 16/December/2023
  */
 @GlideModule
 class CustomGlideApp : AppGlideModule() {
