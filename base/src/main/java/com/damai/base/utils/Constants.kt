@@ -21,8 +21,11 @@ object Constants {
 
     const val PREFERENCE_KEY_USER_LIST_LAST_TIME_UPDATED = "keyUserListLastTimeUpdated"
 
+    const val TAG_REMOTE_MEDIATOR = "UserListRemote"
+
     val NEXT_PATTERN = "(?<=<)(\\S*)(?=>; rel=\"next\")".toRegex()
 
-    const val NETWORK_PAGE_SIZE = 50
-    const val PREFETCH_DISTANCE = 10
+    const val INITIAL_LOAD_SIZE = 50
+    const val PER_PAGE_SIZE = 25
+    const val PREFETCH_DISTANCE = 5
 }

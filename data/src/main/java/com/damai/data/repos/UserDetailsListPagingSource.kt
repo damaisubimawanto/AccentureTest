@@ -5,7 +5,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.damai.base.extensions.nextLinkKey
 import com.damai.base.utils.Constants.HEADER_LINK_NAME
-import com.damai.base.utils.Constants.NETWORK_PAGE_SIZE
+import com.damai.base.utils.Constants.PER_PAGE_SIZE
 import com.damai.data.apiservices.MainService
 import com.damai.data.mappers.UserDetailsResponseToUserDetailsModelMapper
 import com.damai.domain.models.UserDetailsModel
@@ -25,7 +25,7 @@ class UserDetailsListPagingSource @Inject constructor(
         return try {
             val response = mainService.getUserListAsync(
                 since = params.key,
-                perPage = NETWORK_PAGE_SIZE
+                perPage = PER_PAGE_SIZE
             ).await()
 
             /* Convert the body response to body model. */
@@ -66,7 +66,7 @@ class UserDetailsListPagingSource @Inject constructor(
         //    just return null.
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(NETWORK_PAGE_SIZE) ?: anchorPage?.nextKey?.minus(NETWORK_PAGE_SIZE)
+            anchorPage?.prevKey?.plus(PER_PAGE_SIZE) ?: anchorPage?.nextKey?.minus(PER_PAGE_SIZE)
         }
     }
 

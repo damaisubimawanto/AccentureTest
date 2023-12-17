@@ -1,5 +1,6 @@
 package com.damai.accenturetest.ui
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,8 +12,10 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.damai.accenturetest.room.AppDatabase
 import com.damai.base.extensions.asLiveData
-import com.damai.base.utils.Constants.NETWORK_PAGE_SIZE
+import com.damai.base.utils.Constants.INITIAL_LOAD_SIZE
+import com.damai.base.utils.Constants.PER_PAGE_SIZE
 import com.damai.base.utils.Constants.PREFETCH_DISTANCE
+import com.damai.base.utils.Constants.TAG_REMOTE_MEDIATOR
 import com.damai.base.utils.Event
 import com.damai.base.utils.UserSharedPreferencesHelper
 import com.damai.data.apiservices.MainService
@@ -79,7 +82,8 @@ class MainViewModel @Inject constructor(
     fun getUserList(): Flow<PagingData<UserDetailsModel>> {
         return Pager(
             config = PagingConfig(
-                pageSize = NETWORK_PAGE_SIZE,
+                initialLoadSize = INITIAL_LOAD_SIZE,
+                pageSize = PER_PAGE_SIZE,
                 prefetchDistance = PREFETCH_DISTANCE
             ),
             remoteMediator = UserDetailsListRemoteMediator(
@@ -95,6 +99,7 @@ class MainViewModel @Inject constructor(
                 }
             )
         ) { /*pagingSourceFactory*/
+            Log.d(TAG_REMOTE_MEDIATOR, "MainViewModel -> getUserList() -> pagingSourceFactory")
             if (mQueryText.isBlank()) {
                 database.userDao().pagingSourceAll()
             } else {

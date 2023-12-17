@@ -1,16 +1,16 @@
 package com.damai.accenturetest.ui.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.damai.accenturetest.application.MyApplication
 import com.damai.accenturetest.databinding.FragmentUserListBinding
 import com.damai.accenturetest.ui.MainViewModel
 import com.damai.accenturetest.ui.home.adapter.UserListAdapter
 import com.damai.base.BaseFragment
 import com.damai.base.extensions.observe
+import com.damai.base.utils.Constants.TAG_REMOTE_MEDIATOR
 import com.damai.base.utils.EventObserver
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -57,10 +57,9 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, MainViewModel>() 
 
     override fun FragmentUserListBinding.onPreparationFinished() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.getUserList().collectLatest {
-                    mUserListAdapter.submitData(it)
-                }
+            viewModel.getUserList().collectLatest {
+                Log.d(TAG_REMOTE_MEDIATOR, "UserListFragment -> collect latest getUserList()")
+                mUserListAdapter.submitData(it)
             }
         }
     }
