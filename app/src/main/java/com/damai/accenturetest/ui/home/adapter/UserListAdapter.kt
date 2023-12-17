@@ -31,7 +31,7 @@ class UserListAdapter(
 
     inner class ViewHolder(
         private val binding: ItemRvUserBinding
-    ): RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: UserDetailsModel?) {
             with(binding) {

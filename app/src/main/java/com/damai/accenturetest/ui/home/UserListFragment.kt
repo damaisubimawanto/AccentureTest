@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import com.damai.accenturetest.application.MyApplication
 import com.damai.accenturetest.databinding.FragmentUserListBinding
 import com.damai.accenturetest.ui.MainViewModel
+import com.damai.accenturetest.ui.home.adapter.UserFooterStateAdapter
 import com.damai.accenturetest.ui.home.adapter.UserListAdapter
 import com.damai.base.BaseFragment
 import com.damai.base.extensions.observe
@@ -44,7 +45,11 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, MainViewModel>() 
                     viewModel.triggerUserClick(username = username)
                 }
             }
-            adapter = mUserListAdapter
+            adapter = mUserListAdapter.withLoadStateFooter(
+                UserFooterStateAdapter {
+                    mUserListAdapter.retry()
+                }
+            )
         }
     }
 
