@@ -6,7 +6,7 @@ import com.damai.data.responses.UserDetailsResponse
 import com.damai.domain.models.UserDetailsModel
 
 /**
- * Created by damai007 on 11/July/2023
+ * Created by damai007 on 16/December/2023
  */
 class UserDetailsResponseToUserDetailsModelMapper : BaseMapper<UserDetailsResponse?, UserDetailsModel>() {
 
@@ -16,6 +16,7 @@ class UserDetailsResponseToUserDetailsModelMapper : BaseMapper<UserDetailsRespon
             id = value?.id.orZero(),
             avatarUrl = value?.avatarUrl,
             url = value?.url,
+            htmlUrl = value?.htmlUrl,
             name = value?.name,
             company = value?.company,
             blog = value?.blog,

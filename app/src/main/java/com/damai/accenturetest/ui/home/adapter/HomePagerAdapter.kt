@@ -6,7 +6,7 @@ import com.damai.accenturetest.ui.home.UserFavoriteListFragment
 import com.damai.accenturetest.ui.home.UserListFragment
 
 /**
- * Created by damai007 on 12/July/2023
+ * Created by damai007 on 16/December/2023
  */
 class HomePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 

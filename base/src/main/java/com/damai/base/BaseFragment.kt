@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 
 /**
- * Created by damai007 on 10/July/2023
+ * Created by damai007 on 16/December/2023
  */
 abstract class BaseFragment<VB: ViewBinding, VM: ViewModel> : Fragment() {
 

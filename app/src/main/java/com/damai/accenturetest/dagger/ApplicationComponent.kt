@@ -1,33 +1,37 @@
 package com.damai.accenturetest.dagger
 
-import android.content.Context
 import com.damai.accenturetest.ui.MainActivity
 import com.damai.accenturetest.ui.detail.UserDetailsFragment
 import com.damai.accenturetest.ui.home.HomeUserListFragment
 import com.damai.accenturetest.ui.home.UserFavoriteListFragment
 import com.damai.accenturetest.ui.home.UserListFragment
-import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 /**
- * Created by damai007 on 10/July/2023
+ * Created by damai007 on 16/December/2023
  */
 @Singleton
 @Component(
     modules = [
+        AppModules::class,
         NetworkModule::class,
         DispatcherProviderModule::class,
         MainRepositoryModule::class,
         MapperModules::class,
-        PagingSourceModules::class
+        PagingSourceModules::class,
+        RoomModule::class,
+        SharedPreferencesModule::class
     ]
 )
 interface ApplicationComponent {
 
-    @Component.Factory
-    interface Factory {
-        fun create(@BindsInstance applicationContext: Context): ApplicationComponent
+    @Component.Builder
+    interface Builder {
+
+        fun appModule(appModules: AppModules): Builder
+
+        fun build(): ApplicationComponent
     }
 
     fun inject(mainActivity: MainActivity)

@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">AccentureTest</string>
+    <string name="user_shared_preferences_name">AccentureUser</string>
+
+    <string name="retry">Retry</string>
     
     <string name="tab_popular">Popular</string>
     <string name="tab_favorite">Favorite</string>
+
+    <string name="hint_search">Search user</string>
 </resources>

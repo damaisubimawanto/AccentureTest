@@ -1,5 +1,5 @@
 ext {
-    compile_sdk_version = 33
+    compile_sdk_version = 34
     min_sdk_version = 21
 
     android_library = [
@@ -16,13 +16,20 @@ ext {
     ]
 
     dagger = [
-            core                                : 'com.google.dagger:dagger:2.46.1',
-            compiler                            : 'com.google.dagger:dagger-compiler:2.46.1'
+            core                                : 'com.google.dagger:dagger:2.49',
+            compiler                            : 'com.google.dagger:dagger-compiler:2.49'
     ]
 
     glide = [
-            core                                : 'com.github.bumptech.glide:glide:4.15.1',
-            compiler                            : 'com.github.bumptech.glide:compiler:4.15.1'
+            core                                : 'com.github.bumptech.glide:glide:4.16.0',
+            compiler                            : 'com.github.bumptech.glide:ksp:4.16.0'
+    ]
+
+    room = [
+            compiler                            : 'androidx.room:room-compiler:2.6.1',
+            coroutine                           : 'androidx.room:room-ktx:2.6.1',
+            paging                              : 'androidx.room:room-paging:2.6.1',
+            runtime                             : 'androidx.room:room-runtime:2.6.1'
     ]
 
     squareup = [

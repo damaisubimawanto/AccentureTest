@@ -5,17 +5,47 @@
     android:id="@+id/clMainItemLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/dodger_blue"
-    android:padding="8dp">
+    android:padding="@dimen/dimen_8">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivUserPhoto"
+        android:layout_width="@dimen/dimen_50"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <Space
+        android:id="@+id/spaceBetweenPhotoAndName"
+        android:layout_width="@dimen/dimen_6"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/ivUserPhoto"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvUserName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/font_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spaceBetweenPhotoAndName"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Joko" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvUserGithubUrl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingTop="@dimen/dimen_4"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/font_11"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spaceBetweenPhotoAndName"
+        app:layout_constraintTop_toBottomOf="@+id/tvUserName"
+        tools:text="https:\/\/github.com\/&lt;username&gt;" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

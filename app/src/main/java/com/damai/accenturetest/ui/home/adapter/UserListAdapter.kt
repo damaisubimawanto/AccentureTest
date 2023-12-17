@@ -5,12 +5,13 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.damai.accenturetest.databinding.ItemRvUserBinding
 import com.damai.accenturetest.ui.home.diff.UserComparator
+import com.damai.base.extensions.loadImageWithCenterCrop
 import com.damai.base.extensions.setCustomOnClickListener
 import com.damai.base.extensions.viewBinding
 import com.damai.domain.models.UserDetailsModel
 
 /**
- * Created by damai007 on 11/July/2023
+ * Created by damai007 on 16/December/2023
  */
 class UserListAdapter(
     private val callback: (String) -> Unit
@@ -30,11 +31,14 @@ class UserListAdapter(
 
     inner class ViewHolder(
         private val binding: ItemRvUserBinding
-    ): RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: UserDetailsModel?) {
             with(binding) {
                 tvUserName.text = data?.username
+                tvUserGithubUrl.text = data?.htmlUrl
+
+                ivUserPhoto.loadImageWithCenterCrop(url = data?.avatarUrl)
 
                 clMainItemLayout.setCustomOnClickListener {
                     callback.invoke(data?.username.orEmpty())

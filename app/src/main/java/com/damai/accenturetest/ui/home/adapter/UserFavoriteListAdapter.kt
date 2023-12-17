@@ -9,7 +9,7 @@ import com.damai.base.extensions.viewBinding
 import com.damai.domain.models.UserDetailsModel
 
 /**
- * Created by damai007 on 12/July/2023
+ * Created by damai007 on 16/December/2023
  */
 class UserFavoriteListAdapter : ListAdapter<UserDetailsModel, UserFavoriteListAdapter.ViewHolder>(
     UserComparator

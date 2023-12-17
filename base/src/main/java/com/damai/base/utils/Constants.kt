@@ -1,7 +1,7 @@
 package com.damai.base.utils
 
 /**
- * Created by damai007 on 11/July/2023
+ * Created by damai007 on 16/December/2023
  */
 object Constants {
 
@@ -19,5 +19,13 @@ object Constants {
 
     const val BUNDLE_ARGS_USERNAME = "username"
 
+    const val PREFERENCE_KEY_USER_LIST_LAST_TIME_UPDATED = "keyUserListLastTimeUpdated"
+
+    const val TAG_REMOTE_MEDIATOR = "UserListRemote"
+
     val NEXT_PATTERN = "(?<=<)(\\S*)(?=>; rel=\"next\")".toRegex()
+
+    const val INITIAL_LOAD_SIZE = 50
+    const val PER_PAGE_SIZE = 25
+    const val PREFETCH_DISTANCE = 5
 }
