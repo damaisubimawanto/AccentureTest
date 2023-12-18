@@ -6,7 +6,6 @@ import com.damai.accenturetest.application.MyApplication
 import com.damai.accenturetest.databinding.FragmentUserFavoriteListBinding
 import com.damai.accenturetest.ui.MainViewModel
 import com.damai.accenturetest.ui.home.adapter.UserFavoriteListAdapter
-import com.damai.accenturetest.ui.home.adapter.UserListAdapter
 import com.damai.base.BaseFragment
 import com.damai.base.extensions.observe
 import javax.inject.Inject
