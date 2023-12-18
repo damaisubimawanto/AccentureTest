@@ -10,7 +10,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import androidx.room.withTransaction
 import com.damai.accenturetest.room.AppDatabase
+import com.damai.base.coroutines.DispatcherProvider
 import com.damai.base.extensions.asLiveData
 import com.damai.base.utils.Constants.INITIAL_LOAD_SIZE
 import com.damai.base.utils.Constants.PER_PAGE_SIZE
@@ -22,11 +24,13 @@ import com.damai.data.apiservices.MainService
 import com.damai.data.mappers.UserDetailsResponseToRemoteKeyEntityMapper
 import com.damai.data.mappers.UserDetailsResponseToUserEntityMapper
 import com.damai.data.mappers.UserEntityToUserDetailsModelMapper
+import com.damai.data.mappers.UserFavoriteEntityToUserDetailsModelMapper
 import com.damai.data.repos.RemoteMediatorInterface
 import com.damai.data.repos.UserDetailsListRemoteMediator
 import com.damai.domain.models.UserDetailsModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -38,10 +42,12 @@ class MainViewModel @Inject constructor(
     /*private val userListPaging: UserDetailsListPagingSource,*/
     private val mainService: MainService,
     private val database: AppDatabase,
+    private val dispatcherProvider: DispatcherProvider,
     private val userSharedPreferencesHelper: UserSharedPreferencesHelper,
     private val userDetailsToUserEntityMapper: UserDetailsResponseToUserEntityMapper,
     private val userDetailsToRemoteKeyEntityMapper: UserDetailsResponseToRemoteKeyEntityMapper,
-    private val userEntityToUserDetailsModelMapper: UserEntityToUserDetailsModelMapper
+    private val userEntityToUserDetailsModelMapper: UserEntityToUserDetailsModelMapper,
+    private val userFavoriteEntityToUserDetailsModelMapper: UserFavoriteEntityToUserDetailsModelMapper
 ) : ViewModel() {
 
     //region Live Data
@@ -51,8 +57,14 @@ class MainViewModel @Inject constructor(
     private val _userSearchLiveData = MutableLiveData<Event<String>>()
     val userSearchLiveData = _userSearchLiveData.asLiveData()
 
-    var mQueryText = ""
+    private val _userFavoriteListLiveData = MutableLiveData<List<UserDetailsModel>>()
+    val userFavoriteListLiveData = _userFavoriteListLiveData.asLiveData()
     //endregion `Live Data`
+
+    //region Variables
+    private val userFavoriteDao = database.userFavoriteDao()
+    var mQueryText = ""
+    //endregion `Variables`
 
     //region Public Functions
     fun triggerUserClick(
@@ -115,6 +127,18 @@ class MainViewModel @Inject constructor(
                 userEntityToUserDetailsModelMapper.map(userEntity)
             }
         }.cachedIn(viewModelScope)
+    }
+
+    fun getUserFavoriteList() {
+        viewModelScope.launch(dispatcherProvider.io()) {
+            database.withTransaction {
+                userFavoriteDao.getAllUserFavorites().let { userFavoriteEntities ->
+                    userFavoriteEntityToUserDetailsModelMapper.map(userFavoriteEntities).let(
+                        _userFavoriteListLiveData::postValue
+                    )
+                }
+            }
+        }
     }
     //endregion `Public Functions`
 }

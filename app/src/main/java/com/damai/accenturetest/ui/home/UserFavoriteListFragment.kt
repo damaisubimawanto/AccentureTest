@@ -6,7 +6,9 @@ import com.damai.accenturetest.application.MyApplication
 import com.damai.accenturetest.databinding.FragmentUserFavoriteListBinding
 import com.damai.accenturetest.ui.MainViewModel
 import com.damai.accenturetest.ui.home.adapter.UserFavoriteListAdapter
+import com.damai.accenturetest.ui.home.adapter.UserListAdapter
 import com.damai.base.BaseFragment
+import com.damai.base.extensions.observe
 import javax.inject.Inject
 
 /**
@@ -32,8 +34,25 @@ class UserFavoriteListFragment : BaseFragment<FragmentUserFavoriteListBinding, M
 
     override fun FragmentUserFavoriteListBinding.viewInitialization() {
         with(rvUserList) {
-            mUserFavoriteAdapter = UserFavoriteListAdapter()
+            mUserFavoriteAdapter = UserFavoriteListAdapter { userId, username ->
+                if (userId > 0 && username.isBlank().not()) {
+                    viewModel.triggerUserClick(
+                        userId = userId,
+                        username = username
+                    )
+                }
+            }
             adapter = mUserFavoriteAdapter
         }
+    }
+
+    override fun FragmentUserFavoriteListBinding.setupObservers() {
+        observe(viewModel.userFavoriteListLiveData) {
+            mUserFavoriteAdapter.submitList(it)
+        }
+    }
+
+    override fun FragmentUserFavoriteListBinding.onPreparationFinished() {
+        viewModel.getUserFavoriteList()
     }
 }

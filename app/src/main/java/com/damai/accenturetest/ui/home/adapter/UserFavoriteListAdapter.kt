@@ -5,13 +5,18 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.damai.accenturetest.databinding.ItemRvUserBinding
 import com.damai.accenturetest.ui.home.diff.UserComparator
+import com.damai.base.extensions.loadImageWithCenterCrop
+import com.damai.base.extensions.orZero
+import com.damai.base.extensions.setCustomOnClickListener
 import com.damai.base.extensions.viewBinding
 import com.damai.domain.models.UserDetailsModel
 
 /**
  * Created by damai007 on 16/December/2023
  */
-class UserFavoriteListAdapter : ListAdapter<UserDetailsModel, UserFavoriteListAdapter.ViewHolder>(
+class UserFavoriteListAdapter(
+    private val callback: (userId: Int, username: String) -> Unit
+) : ListAdapter<UserDetailsModel, UserFavoriteListAdapter.ViewHolder>(
     UserComparator
 ) {
 
@@ -32,6 +37,16 @@ class UserFavoriteListAdapter : ListAdapter<UserDetailsModel, UserFavoriteListAd
         fun bind(data: UserDetailsModel) {
             with(binding) {
                 tvUserName.text = data.username
+                tvUserGithubUrl.text = data.htmlUrl
+
+                ivUserPhoto.loadImageWithCenterCrop(url = data.avatarUrl)
+
+                clMainItemLayout.setCustomOnClickListener {
+                    callback.invoke(
+                        data.id.orZero(),
+                        data.username.orEmpty()
+                    )
+                }
             }
         }
     }
