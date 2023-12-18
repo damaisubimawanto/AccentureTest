@@ -23,4 +23,8 @@ fun String?.nextLinkKey(): Int? {
         }
     } else null
 }
+
+fun String?.validText() = if (this.isNullOrBlank()) {
+    "-"
+} else this
 //endregion `String values`

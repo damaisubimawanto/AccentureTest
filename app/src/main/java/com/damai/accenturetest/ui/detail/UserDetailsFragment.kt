@@ -11,6 +11,7 @@ import com.damai.base.extensions.observe
 import com.damai.base.extensions.popBackStack
 import com.damai.base.extensions.setCustomOnClickListener
 import com.damai.base.extensions.showToastMessage
+import com.damai.base.extensions.validText
 import com.damai.base.extensions.visible
 import com.damai.base.utils.Constants.BUNDLE_ARGS_USERNAME
 import com.damai.base.utils.EventObserver
@@ -63,8 +64,16 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding, UserDetails
         }
 
         observe(viewModel.userDetailsLiveData) {
-            tvUserName.text = it.name
             ivPhotoProfile.loadImageWithCenterCrop(url = it.avatarUrl)
+
+            tvUserFullName.text = it.name.validText()
+            tvUserLoginName.text = it.username.validText()
+            tvRepositoriesCounter.text = "${it.publicRepos}"
+            tvFollowersCounter.text = "${it.followers}"
+            tvFollowingCounter.text = "${it.following}"
+            tvBio.text = it.bio.validText()
+            tvLocation.text = it.location.validText()
+            tvEmail.text = it.email.validText()
         }
 
         observe(viewModel.userDetailsErrorLiveData, EventObserver {

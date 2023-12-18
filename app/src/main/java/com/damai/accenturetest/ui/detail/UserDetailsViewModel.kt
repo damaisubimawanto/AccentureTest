@@ -54,8 +54,8 @@ class UserDetailsViewModel @Inject constructor(
                         }
                     }
                     is Resource.Error -> {
-                        resource.errorMessage?.let { _errorMessage ->
-                            Event(_errorMessage).let(_userDetailsErrorLiveData::postValue)
+                        resource.errorMessage?.let { errorMessage ->
+                            Event(errorMessage).let(_userDetailsErrorLiveData::postValue)
                         }
                     }
                 }

@@ -3,6 +3,13 @@
     <string name="user_shared_preferences_name">AccentureUser</string>
 
     <string name="retry">Retry</string>
+    <string name="repositories">Repositories</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="bio">Bio</string>
+    <string name="info">Info</string>
+    <string name="location">Location</string>
+    <string name="email">Email</string>
     
     <string name="tab_popular">Popular</string>
     <string name="tab_favorite">Favorite</string>
