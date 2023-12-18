@@ -66,6 +66,7 @@ dependencies {
     implementation project(':base')
     implementation project(':data')
     implementation project(':domain')
+    testImplementation project(path: ':base')
 
     ksp dagger.compiler
     ksp room.compiler
@@ -82,4 +83,7 @@ dependencies {
     testImplementation test_library.livedata_test
     testImplementation test_library.mock
     testImplementation test_library.mock_webserver
+    testImplementation test_library.robolectric
+
+    testRuntimeOnly test_library.vintage_engine
 }

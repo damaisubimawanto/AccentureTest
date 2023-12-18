@@ -58,13 +58,20 @@ dependencies {
     api squareup.retrofit_coroutines_adapter
     api squareup.retrofit_gson_converter
 
+    api third_party.slf4j
+
     ksp glide.compiler
     ksp room.compiler
 
     androidTestApi test_library.androidx_test_espresso
     androidTestApi test_library.androidx_test_extension
 
-    testImplementation test_library.androidx_core_test
-    testImplementation test_library.androidx_test_espresso
-    testImplementation test_library.androidx_test_extension
+    implementation test_library.androidx_core_test
+    implementation test_library.androidx_test_espresso
+    implementation test_library.androidx_test_extension
+    implementation test_library.androidx_test_extension_ktx
+    implementation test_library.androidx_test_runner
+    implementation test_library.junit_core
+    implementation test_library.junit_jupiter
+    implementation test_library.kotlinx_coroutines_test
 }
