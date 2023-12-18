@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import com.damai.accenturetest.room.AppDatabase
 import com.damai.domain.daos.RemoteKeyDao
 import com.damai.domain.daos.UserDao
+import com.damai.domain.daos.UserFavoriteDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -34,5 +35,10 @@ class RoomModule {
     @Provides
     fun provideRemoteKeyDao(appDatabase: AppDatabase): RemoteKeyDao {
         return appDatabase.remoteKeyDao()
+    }
+
+    @Provides
+    fun provideUserFavoriteDao(appDatabase: AppDatabase): UserFavoriteDao {
+        return appDatabase.userFavoriteDao()
     }
 }

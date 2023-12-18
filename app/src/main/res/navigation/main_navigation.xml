@@ -17,8 +17,13 @@
 
             <argument
                 android:name="username"
-                app:argType="string"
-                android:defaultValue="" />
+                android:defaultValue=""
+                app:argType="string" />
+
+            <argument
+                android:name="user_id"
+                android:defaultValue="0"
+                app:argType="integer" />
 
         </action>
 

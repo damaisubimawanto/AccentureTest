@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.damai.accenturetest.databinding.ItemRvUserBinding
 import com.damai.accenturetest.ui.home.diff.UserComparator
 import com.damai.base.extensions.loadImageWithCenterCrop
+import com.damai.base.extensions.orZero
 import com.damai.base.extensions.setCustomOnClickListener
 import com.damai.base.extensions.viewBinding
 import com.damai.domain.models.UserDetailsModel
@@ -14,7 +15,7 @@ import com.damai.domain.models.UserDetailsModel
  * Created by damai007 on 16/December/2023
  */
 class UserListAdapter(
-    private val callback: (String) -> Unit
+    private val callback: (userId: Int, username: String) -> Unit
 ) : PagingDataAdapter<UserDetailsModel, UserListAdapter.ViewHolder>(
     diffCallback = UserComparator
 ) {
@@ -41,7 +42,10 @@ class UserListAdapter(
                 ivUserPhoto.loadImageWithCenterCrop(url = data?.avatarUrl)
 
                 clMainItemLayout.setCustomOnClickListener {
-                    callback.invoke(data?.username.orEmpty())
+                    callback.invoke(
+                        data?.id.orZero(),
+                        data?.username.orEmpty()
+                    )
                 }
             }
         }

@@ -45,7 +45,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Live Data
-    private val _userClickedLiveData = MutableLiveData<Event<String>>()
+    private val _userClickedLiveData = MutableLiveData<Event<Pair<Int, String>>>()
     val userClickedLiveData = _userClickedLiveData.asLiveData()
 
     private val _userSearchLiveData = MutableLiveData<Event<String>>()
@@ -55,8 +55,13 @@ class MainViewModel @Inject constructor(
     //endregion `Live Data`
 
     //region Public Functions
-    fun triggerUserClick(username: String) {
-        Event(username).let(_userClickedLiveData::setValue)
+    fun triggerUserClick(
+        userId: Int,
+        username: String
+    ) {
+        Event(
+            Pair(userId, username)
+        ).let(_userClickedLiveData::setValue)
     }
 
     fun triggerUserSearch(searchText: String) {

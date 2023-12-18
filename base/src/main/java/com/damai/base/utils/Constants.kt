@@ -18,6 +18,7 @@ object Constants {
     const val QUERY_PARAM_SINCE = "since"
 
     const val BUNDLE_ARGS_USERNAME = "username"
+    const val BUNDLE_ARGS_USER_ID = "user_id"
 
     const val PREFERENCE_KEY_USER_LIST_LAST_TIME_UPDATED = "keyUserListLastTimeUpdated"
 

@@ -14,6 +14,7 @@ import com.damai.base.extensions.showToastMessage
 import com.damai.base.extensions.validText
 import com.damai.base.extensions.visible
 import com.damai.base.utils.Constants.BUNDLE_ARGS_USERNAME
+import com.damai.base.utils.Constants.BUNDLE_ARGS_USER_ID
 import com.damai.base.utils.EventObserver
 import javax.inject.Inject
 
@@ -38,6 +39,7 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding, UserDetails
 
     override fun FragmentUserDetailsBinding.viewInitialization() {
         arguments?.let { bundle ->
+            viewModel.clickedUserId = bundle.getInt(BUNDLE_ARGS_USER_ID, 0)
             viewModel.clickedUsername = bundle.getString(BUNDLE_ARGS_USERNAME).orEmpty()
         }
     }

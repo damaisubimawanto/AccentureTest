@@ -19,6 +19,7 @@ import com.damai.base.extensions.setCustomOnClickListener
 import com.damai.base.extensions.showSoftKeyboard
 import com.damai.base.extensions.visible
 import com.damai.base.utils.Constants.BUNDLE_ARGS_USERNAME
+import com.damai.base.utils.Constants.BUNDLE_ARGS_USER_ID
 import com.damai.base.utils.EventObserver
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.Timer
@@ -105,7 +106,10 @@ class HomeUserListFragment : BaseFragment<FragmentHomeUserListBinding, MainViewM
         observe(viewModel.userClickedLiveData, EventObserver {
             navigateTo(
                 resId = R.id.action_home_user_list_to_user_details,
-                bundle = bundleOf(BUNDLE_ARGS_USERNAME to it)
+                bundle = bundleOf(
+                    BUNDLE_ARGS_USER_ID to it.first,
+                    BUNDLE_ARGS_USERNAME to it.second
+                )
             )
         })
     }
